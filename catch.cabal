@@ -50,6 +50,19 @@ extra-doc-files:    CHANGELOG.md
 common warnings
     ghc-options: -Wall
 
+library catch-lib
+    exposed-modules:  Parser
+                    , Parser.Internal
+                    , Types
+
+    hs-source-dirs:   lib
+
+    build-depends:    base ^>=4.17.2.1
+                    , optparse-applicative
+                    , parsec
+                
+    default-language: Haskell2010
+
 executable catch
     -- Import common warning flags.
     import:           warnings
@@ -66,10 +79,21 @@ executable catch
     -- Other library packages from which modules are imported.
     build-depends:    base ^>=4.17.2.1
                     , optparse-applicative
-                    , parsec
+                    , catch-lib
 
     -- Directories containing source files.
     hs-source-dirs:   app
 
     -- Base language which the package is written in.
     default-language: Haskell2010
+
+test-suite tests
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      tests, lib
+  main-is:             Spec.hs
+  build-depends:       base
+                     , catch-lib
+                     , hspec
+                     , parsec
+
+  default-language:    Haskell2010
